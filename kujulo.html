@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<!-- source: http://jsbin.com/kujulo/28 -->
+<html>
+<head>
+<meta name="description" content="Plans for local storage">
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="manifest" href="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/manifest.json">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  	<!--[if lt IE 9]>
+			 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>SSE - Safety Moment</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<style id="jsbin-css">
+/* Sticky footer styles*/
+html, body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+	background-image: url(https://jsbin-user-assets.s3.amazonaws.com/peterthepig/dna_bg.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100%;
+	background-size: 100%;
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by its height */
+	margin: 0 auto -75px;
+	/* Pad bottom by footer height */
+	padding: 0 0 75px;
+}
+/* Set the fixed height of the footer here */
+#footer {
+	height: 75px;
+	background-color: #000657;
+}
+#footerNav {
+	margin: auto;
+	width: 100%;
+	color: #fff;
+}
+.ftrNav {
+	width: 33%;
+	height : 75px;
+	float: left;
+	padding: 2px 0 0 0;
+	text-align: center;
+}
+#safetyContent {
+	margin: auto;
+	min-height: 150px;
+	border-radius: 15px;
+	border: #8EC600 1px solid;
+	padding: 10px 10px 0 0;
+	width: 250px;
+	background-color: rgba(255,255,255,.8);
+}
+
+#wrap > .container {
+	padding: 1px 1px 1px;
+}
+.container .credit {
+	margin: auto;
+}
+#footer > .container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+h1 {
+	text-align: center;
+	color: #000C52;
+  line-height: 0.8em;
+}
+h2 {
+	text-align: left;
+	color: #000C52;
+	font-size: 2.0em;
+}
+p {
+	text-align: left;
+	color: #000C52;
+	font-size: 1.0em;
+ 	}
+#main2 p {
+	text-align: center;
+	color: #000C52;
+	font-size: 1.6em;
+	margin: 0 0 0 0;
+}
+a {
+	color: #FFF;
+	text-decoration: none;
+}
+a:hover {
+	color: #FFF;
+	text-decoration: none;
+}
+code {
+	font-size: 80%;
+}
+.button {
+	background: linear-gradient(to bottom, #22abe9 5%, #36caf0 100%);
+	box-shadow: inset 0 1px 0 0 #7bdcf4;
+	border: 1px solid #0F799E;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 1.8em;
+	font-weight: 700;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #13506D;
+	padding: 10px 15px 4px 15px;
+}
+#quoteTop {
+	position: relative;
+	margin: -11px 0 0 -7px;
+}
+#quoteBtm {
+	position: relative;
+	margin: -0px auto 150 auto;
+	width: 255px;
+	text-align: right;
+}
+/** Form Styles **/
+
+#main {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 0 10px;
+}
+#main2 {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 0 0;
+	text-align: center;
+}
+label {
+	font-size: 1.4em;
+	font-weight: normal;
+	color: #000C52;
+}
+input {
+	width: 260px;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 25px;
+	border-radius: 5px;
+	border: 1px solid #cbcbcb;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
+	font-size: 1.4em;
+	height: 50px;
+}
+input[type=submit] {
+	background: linear-gradient(to bottom, #22abe9 5%, #36caf0 100%);
+	box-shadow: inset 0 1px 0 0 #7bdcf4;
+	border: 1px solid #0F799E;
+	color: #fff;
+	font-size: 1.8em;
+	font-weight: 700;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #13506D
+}
+input[type=submit]:hover {
+	background: linear-gradient(to bottom, #36caf0 5%, #22abe9 100%)
+}
+
+.savedialog {
+  display: none;
+  visibility: hidden;
+}
+
+.axtext {
+  font-family:'ArialMT', 'Arial';
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#333333;
+  text-align:left;
+  line-height:normal;
+}
+
+#SmId {
+  display:none;
+}
+#SmTtl {
+  display:none;
+}
+/*
+The following unn_img id entries are for the 'flash' safety moment to align the leading letter of the Acronym 'PASS'
+*/
+#u19_img {
+  width:1px;
+  height:23px;
+}
+#u21_img {
+  width:10px;
+  height:23px;
+}
+#u23_img {
+  width:10px;
+  height:23px;
+}
+#u25_img {
+  width:0px;
+  height:23px;
+}
+#u26_img {
+  width:10px;
+  height:23px;
+}
+</style>
+</head>
+<body onload="checkUpFront()">
+<!-- Wrap all page content here -->
+<div id="wrap">
+
+  <!-- Begin page content -->
+  <div class="container">
+      <h1><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/logo.png" width="30%" height="5%" alt="SafetyApp"></h1>
+      <div id="safetyContent">
+        <div id="seasonalCampaign" class="season">
+
+          <div id="showIt" class="safemom">
+            <div id="quoteTop"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/quote_top.png">
+            </div>
+            <div id="main2">
+              <h1 id="headLine">Stay Safe 4 Summer</h1>
+              <span><p id="SmId">Summer2015</p><p id="SmTtl">2015/10/01 09:00</p><p id="safeTMo">In the Summer sun, always apply suncream and drink plenty of water.</p></span>
+            </div>
+            <div id="quoteBtm"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/quote_btm.png">
+            </div>
+          </div>
+
+          <div id="saveIt" class="savedialog">
+            <div id="main2Save">
+              <h1>Safety Moment Saved</h1>
+              <h1><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/tick.png" width="108" height="108" alt="Saved to localStorage"></h1>
+              <br /><br />
+              <a href="#" class="button" onclick="continueSafetyMoment(this)">Continue</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div><!--end page content -->
+
+</div><!--End wrap-->
+
+<div id="footer">
+  <div class="container">
+  	<div id="footerNav">
+
+    <div id="ftrSav" class="ftrNav">
+      <a href="#" onclick="saveMoment(this)"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Save.png" alt="Save"><br />Save</a>
+    </div>
+
+    <div id="ftrRet" class="ftrNav">
+    <a href="#" onclick="getLocalStorageSafetyMoment(this)"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Retrieve.png" alt="Retrieve"><br />Retrieve</a>
+    </div>
+
+    <div class="ftrNav">
+    <a href="#" onclick="getNext()"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Refresh.png" alt="Refresh"><br />Refresh</a>
+    </div>
+
+    </div>
+
+  </div>
+</div>
+  <noscript>
+    <style>
+    .container {display:none;}
+    </style>
+    <div class="noscriptmsg">
+      Sorry, you don't have javascript enabled. Please enable it and retry.
+    </div>
+  </noscript>
+<script id="jsbin-javascript">
+/*
+
+*/
+var appState = 0; //disable save until  Refresh key used...
+
+var commsLog = 0; //value=0 disables alerts and logging
+
+function saveMoment(el) {
+
+  //can we save yet? not unless refresh key used...
+  if (appState == 1) {
+
+    if (html5_storage()) {
+      //toggle off the Safety Moment
+      showSavePanel(el);
+
+      //call save to local storage
+      var curSafetyId = document.getElementById('SmId').innerHTML;
+      var curSafetyText = document.getElementById('safeTMo').innerHTML;
+      var curSafetyHead = document.getElementById('headLine').innerHTML;
+      var curSafetyTtl = document.getElementById('SmTtl').innerHTML;
+
+      if (commsLog == 1)
+      {
+      console.log("local SMId = " + curSafetyId);
+      console.log("local SMHead = " + curSafetyHead);
+      console.log("local SMText = " + curSafetyText);
+      console.log("local SMText = " + curSafetyTtl);
+      }
+
+      //save the current safety moment to localstorage
+      tryToSave("SmId", curSafetyId);
+      tryToSave("SmHead", curSafetyHead);
+      tryToSave("SmText", curSafetyText);
+      tryToSave("SmTtl", curSafetyTtl);
+
+      //fetch local storage
+      var checkSMId = localStorage.getItem("SmId");
+      var checkSMHead = localStorage.getItem("SmHead");
+      var checkSMText =  localStorage.getItem("SmText");
+      var checkSMTtl = localStorage.getItem("SmTty");
+     }
+  }
+}
+
+function tryToSave(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch(e) {
+    if (isQuotaExceeded(e)) {
+      // Storage full, do some clean-up
+      flushSafetyMo();
+    }
+  }
+}
+
+function continueSafetyMoment(el) {
+  // toggle off the Save Dialog
+  // toggle on the Safety Moment
+    var elem = document.getElementById('showIt');
+  elem.style.display = 'block';
+  elem.style.visibility = 'visible';
+
+  var elem2 = document.getElementById('saveIt');
+  elem2.style.display = 'none';
+  elem2.style.visibility = 'hidden';
+
+}
+
+function showSavePanel(el) {
+      //toggle off the Safety Moment
+      var elem2 = document.getElementById('showIt');
+      elem2.style.display = 'none';
+      elem2.style.visibility = 'hidden';
+
+      //toggle on the Save Dialog
+      var elem = document.getElementById('saveIt');
+      elem.style.display = 'block';
+      elem.style.visibility = 'visible';
+}
+
+function getNext() {
+  appState = 1; // enable the save feature.
+  // if (commsLog == 1) console.log('appstate = ' + appState);
+
+  //aim is for the Safety Moments to come from JSON data file rather than in this function...
+
+  //get current displayed safety moment into elements
+  var elem = document.getElementById('safeTMo');
+  var elem2 = document.getElementById('headLine');
+  var elem3 = document.getElementById('SmId');
+  var elem4 = document.getElementById('SmTtl');
+
+  var fancyMoment = 'To operate a fire extinguisher, remember \'PASS\'' + '<div id="u20" class="axtext">' + '<p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u19_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'P' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'ull Pin' + '</span></p>' + '</div>' + '<div id="u21" class="ax_paragraph">' +  '<div id="u22" class="axtext">' + '<p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u21_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'A' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'im Low' + '</span></p>' + '</div>' + '</div>' + '<div id="u24" class="axtext">' + ' <p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u23_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'S' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'queeze' + '</span></p>' + '</div>' + '<div id="u26" class="axtext">' + ' <p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u25_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'S' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'weep' + '<img id="u26_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + '</span></p>' + '</div>';
+
+  if (elem3.innerHTML == 'SM_ES_001') {
+     elem.innerHTML  = 'Keep all tools in good condition with regular maintenance.';
+     elem2.innerHTML = 'Hand & Power Tools';
+    elem3.innerHTML = 'SM_HPT_001';
+    elem4.innerHTML = '2015/11/21 14:15';
+    //elem3.style.display = 'none';
+  }
+  else {
+    if (elem3.innerHTML == 'SM_HPT_001') {
+      elem.innerHTML = 'Safety guards must not be removed when using tools. It increases potential for injury, and is illegal';
+      elem2.innerHTML = 'Ladder Safety';
+      elem3.innerHTML = 'SM_LS_001';
+      elem4.innerHTML = '2015/11/30 13:30';
+
+    //elem3.style.display = 'none';
+    }
+    else {
+      if (elem3.innerHTML == 'SM_LS_001') {
+        elem.innerHTML = fancyMoment;
+        elem2.innerHTML = 'Fire Safety';
+        elem3.innerHTML = 'SM_FS_001';
+        elem4.innerHTML = '2015/11/21 10:45';
+        //elem3.style.display = 'none';
+      } // if
+      else {
+        if (elem3.innerHTML == 'SM_FS_001') {
+          elem.innerHTML = 'Avoid texting or cell phone use when climbing stairs';
+          elem2.innerHTML = 'Slips, Trips &amp; Falls';
+          elem3.innerHTML = 'SM_STP_001';
+          elem4.innerHTML = '2015/11/21 14:00';
+          //elem3.style.display = 'none';
+        } //if
+        else {
+          if (elem3.innerHTML == 'SM_STP_001') {
+            elem.innerHTML = 'Do not cycle on the right side of the road, cycle on the correct (left) side of the road';
+            elem2.innerHTML = 'Bicycle Safety';
+            elem3.innerHTML = 'SM_BS_001';
+            elem4.innerHTML = '2015/08/21 15:00';
+            //elem3.style.display = 'none';
+          }
+          else {
+            if (elem3.innerHTML == 'SM_BS_001') {
+              elem.innerHTML = 'Don’t use electrical equipment in damp or wet conditions.';
+              elem2.innerHTML = 'Electrical Safety';
+              elem3.innerHTML = 'SM_ES_001';
+              elem4.innerHTML = '2015/12/30 11:30';
+              //elem3.style.display = 'none';
+            }
+            else {
+              if (elem3.innerHTML == 'Summer2015') {
+                 elem.innerHTML = 'Don’t use electrical equipment in damp or wet conditions.';
+              elem2.innerHTML = 'Electrical Safety';
+              elem3.innerHTML = 'SM_ES_001';
+              elem4.innerHTML = '2015/12/30 11:30';
+              //elem3.style.display = 'none';
+              }
+              else {console.log('not found');}
+            }
+          }
+        }
+      } //else
+    } //else
+  } //else
+
+} //function
+
+function getLocalStorageSafetyMoment(el) {
+  if (!html5_storage()) {
+    console.log("no local storage!");
+  }
+  else {
+    //we have local storage capability, so...
+    if (commsLog == 1) console.log("yes local SM storage!");
+
+    //check for local safety message
+    if (localStorage.getItem("SmId") != null) {
+      var savedSafetyMoId = localStorage.getItem("SmId");
+      var savedSafetyMoHead = localStorage.getItem("SmHead");
+      var savedSafetyMoText = localStorage.getItem("SmText");
+      var savedSafetyMoTtl = localStorage.getItem("SmTtl");
+
+      //to use local saved one, get handles for the containers...
+      var elem = document.getElementById('safeTMo');
+      var elem2 = document.getElementById('headLine');
+      var elem3 = document.getElementById('SmId');
+      var elem4 = document.getElementById('SmTtl');
+
+      //... and then place Safety Moment into the HTML
+      elem.innerHTML = savedSafetyMoText;
+      elem2.innerHTML = savedSafetyMoHead;
+      elem3.innerHTML = savedSafetyMoId;
+      elem4.innerHTML = savedSafetyMoTtl;
+
+      //evidence...
+      if (commsLog == 1) {
+        console.log("local safety mo id = " + savedSafetyMoId);
+        console.log("local safety mo head = " + savedSafetyMoHead);
+        console.log("local safety mo text = " + savedSafetyMoText);
+        console.log("local safety mo Ttl = " + savedSafetyMoTtl);
+      }
+
+    //call routine to enable show of safety moment
+    continueSafetyMoment(el);
+    }
+    else {if (commsLog == 1) console.log('no moments');}
+  }
+}
+
+function checkUpFront() {
+  //onload for the page
+   if (commsLog == 1) console.log("onload");
+
+  if (!html5_storage()) {
+    console.log("no local storage!");
+    var elemSav = document.getElementById('ftrSav');
+    elemSav.disabled = true;
+    var elemRet = document.getElementById('ftrRet');
+    elemRet.disabled = true;
+  }
+  else {
+    //we have local storage capability...
+
+    //check the Ttl for the local safety message
+    var dateNow = new Date();
+
+    //Ttl into elem4
+    var elem4 = localStorage.getItem("SmTtl");
+    //check we have a date...
+    if (commsLog == 1) console.log('checkit' + ' ' + elem4);
+
+    if (elem4 != null) {
+      if (commsLog == 1) console.log('check for mo ' + elem4);
+
+      //parse elem4.innerHTML date into date + time elements
+      var e4Y = (elem4.substring(0, 4)), e4M = parseInt((elem4.substring(5, 7)))-1, e4D = (elem4.substring(8, 10)), e4Hr = (elem4.substring(11, 13)), e4Mn = (elem4.substring(14, 16));
+      // remembering javaScript months are 0 based
+
+      if (commsLog == 1) console.log(e4Y + ' ' + e4M + ' ' + e4D + ' ' + e4Hr + ' ' + e4Mn);
+      //set up a date from elem 4
+      var d = new Date(e4Y, e4M, e4D, e4Hr, e4Mn, 0);
+      var timeNow = formatDate();
+      //console.log(timeNow);
+
+      if (commsLog == 1) console.log(d.toString());
+      if (commsLog == 1) console.log(dateNow.toString());
+      if (d < dateNow) {
+        //flush local storage for safety mo
+        if (commsLog == 1) console.log('flush!');
+        flushSafetyMo();
+      }
+    }
+
+    //the following two statements are provided only for a reset
+    //flush local storage for safety mo
+    //flushSafetyMo();
+    //flush local storage for campaign message
+    //flushCampaignMessage();
+
+  }
+}
+
+
+//utility function for returning date
+function formatDate() {
+    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-') + ' ' + myDate;
+}
+
+//utility function instead of Modenizr
+function html5_storage() {
+  try {
+    return 'localStorage' in window && window.localStorage !== null;
+  } catch (e) {
+    console.log(e.toString());
+    return false;
+  }
+}
+
+//utility to check if storage quota exceeded
+function isQuotaExceeded(e) {
+  var quotaExceeded = false;
+  if (e) {
+    if (e.code) {
+      switch (e.code) {
+        case 22:
+          quotaExceeded = true;
+          break;
+        case 1014:
+          // Firefox
+          if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+            quotaExceeded = true;
+          }
+          break;
+      }
+    } else if (e.number === -2147024882) {
+      // Internet Explorer 8
+      quotaExceeded = true;
+    }
+  }
+  return quotaExceeded;
+}
+
+//flush local storage for SM
+function flushSafetyMo() {
+  localStorage.removeItem("SmId");
+  localStorage.removeItem("SmHead");
+  localStorage.removeItem("SmText");
+  localStorage.removeItem("SmTtl");
+}
+
+//flush local storage for CM
+function flushCampaignMessage() {
+  localStorage.removeItem("CmId");
+  localStorage.removeItem("CmText");
+}
+/*
+Function List
+==============
+saveMoment - saves the current safety moment - the action from the Save key
+
+continueSafetyMoment - next step after a save of the current safety moment
+
+getNext - see the next safety moment - the action from the Refresh Key
+
+getLocalStorageSafetyMoment - see the saved local safety moment - the action from the retrieve key
+
+checkUpFront - partially in development - this function is: 1. the function called by onload() 2. is aimed at presenting a Campaign Message
+
+html5_storage - utility function to check local storage is available to the browser
+
+flushSafetyMo - utility function to remove the "SmId" and "SmText" local storage items
+
+flushCampaignMessage - in development - utility function to remove the "CmId" and "CmText" local storage items
+*/
+/*
+How to get the safety moment app to work with Mobile Safari on iOs 7...
+When the Safari browser is used switch out of Private mode before using the app. This is because iOs 7 wipes all local storage by policy when the browser is in Private mode. So to use local storage to hold a safety moment you need to switch Private `Mode off. The policy implemented is nshttpcookiestorage
+
+*/
+ /* Advanced use of the campaign message is commented out for now...
+    //console.log("yes local CM storage!");
+
+    //check for campaign message to 'splash' over the screen at load-time
+    var campaignMessageId = localStorage.getItem("CmId");
+    var campaignMessageText = localStorage.getItem("CmText");
+
+    //check local storage for campaign message
+    if (campaignMessageId == null || campaignMessageText == null) {
+
+      //fetch current campaign message as none exists
+      campaignMessageId = "Summer2015";
+      campaignMessageText = "In the Summer sun, always apply suncream and drink plenty of water";
+
+      //set local storage to current campaign
+      localStorage.setItem("CmId", campaignMessageId);
+      localStorage.setItem("CmText", campaignMessageText);
+    }
+    else {
+      //campaign message exists, so compare with current one to see if out of date
+      localStorage.setItem("CmId", campaignMessageId);
+      localStorage.setItem("CmText", campaignMessageText);
+      if (campaignMessageId != "Summer2015") {
+        //so set local to seasonal campaign message
+        campaignMessageId = "Summer2015";
+        campaignMessageText = "In the Summer sun, always apply suncream and drink plenty of water";
+      }
+    }
+
+    */
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script id="jsbin-source-html" type="text/html"><!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="Plans for local storage">
+<script src="https://code.jquery.com/jquery.min.js"><\/script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="manifest" href="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/manifest.json">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"><\/script>
+  	<\!--[if lt IE 9]>
+			 <script src="//html5shim.googlecode.com/svn/trunk/html5.js"><\/script>
+		<![endif]-->
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>SSE - Safety Moment</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+<body onload="checkUpFront()">
+<\!-- Wrap all page content here -->
+<div id="wrap">
+
+  <\!-- Begin page content -->
+  <div class="container">
+      <h1><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/logo.png" width="30%" height="5%" alt="SafetyApp"></h1>
+      <div id="safetyContent">
+        <div id="seasonalCampaign" class="season">
+
+          <div id="showIt" class="safemom">
+            <div id="quoteTop"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/quote_top.png">
+            </div>
+            <div id="main2">
+              <h1 id="headLine">Stay Safe 4 Summer</h1>
+              <span><p id="SmId">Summer2015</p><p id="SmTtl">2015/10/01 09:00</p><p id="safeTMo">In the Summer sun, always apply suncream and drink plenty of water.</p></span>
+            </div>
+            <div id="quoteBtm"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/quote_btm.png">
+            </div>
+          </div>
+
+          <div id="saveIt" class="savedialog">
+            <div id="main2Save">
+              <h1>Safety Moment Saved</h1>
+              <h1><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/tick.png" width="108" height="108" alt="Saved to localStorage"></h1>
+              <br /><br />
+              <a href="#" class="button" onclick="continueSafetyMoment(this)">Continue</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div><\!--end page content -->
+
+</div><\!--End wrap-->
+
+<div id="footer">
+  <div class="container">
+  	<div id="footerNav">
+
+    <div id="ftrSav" class="ftrNav">
+      <a href="#" onclick="saveMoment(this)"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Save.png" alt="Save"><br />Save</a>
+    </div>
+
+    <div id="ftrRet" class="ftrNav">
+    <a href="#" onclick="getLocalStorageSafetyMoment(this)"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Retrieve.png" alt="Retrieve"><br />Retrieve</a>
+    </div>
+
+    <div class="ftrNav">
+    <a href="#" onclick="getNext()"><img src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/icon_Refresh.png" alt="Refresh"><br />Refresh</a>
+    </div>
+
+    </div>
+
+  </div>
+</div>
+  <noscript>
+    <style>
+    .container {display:none;}
+    </style>
+    <div class="noscriptmsg">
+      Sorry, you don't have javascript enabled. Please enable it and retry.
+    </div>
+  </noscript>
+</body>
+
+</html>
+
+<\!--
+Error handling cases:
+No network - how?
+No javascript - how?
+No local storage on save -disabled
+No local storage on retrieve-disabled
+No safety moment stored locally - not yet
+Safety moment TTL has expired - not yet
+Privacy mode in the browser - how?
+
+Onload
+======
+Check local storage for 'saved' safety message
+If one exists use this instead of the default
+
+Todo:
+Check local storage for 'campaign' message,
+If one exists show this as 'splash'
+If none exists then place seasonal 'campaign' into local storage
+
+Onclick of save
+===============
+Save current to local
+Only enabled once refresh key used
+Also local storage save checks for storage being full
+
+Onclick of ok
+=============
+Is this a confirm? 
+currently the activity has happened and no cancel
+
+Onclick of Retrieve
+===================
+Check local storage for 'saved' safety message
+If one exists show it
+TTL will expire the saved moment in localstorage
+so no delete is needed
+
+Onclick of Refresh
+==================
+Replace current message with next one
+Sets appstate so that a save to local is allowed
+ --></script>
+
+<script id="jsbin-source-css" type="text/css">/* Sticky footer styles*/
+html, body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+	background-image: url(https://jsbin-user-assets.s3.amazonaws.com/peterthepig/dna_bg.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100%;
+	background-size: 100%;
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by its height */
+	margin: 0 auto -75px;
+	/* Pad bottom by footer height */
+	padding: 0 0 75px;
+}
+/* Set the fixed height of the footer here */
+#footer {
+	height: 75px;
+	background-color: #000657;
+}
+#footerNav {
+	margin: auto;
+	width: 100%;
+	color: #fff;
+}
+.ftrNav {
+	width: 33%;
+	height : 75px;
+	float: left;
+	padding: 2px 0 0 0;
+	text-align: center;
+}
+#safetyContent {
+	margin: auto;
+	min-height: 150px;
+	border-radius: 15px;
+	border: #8EC600 1px solid;
+	padding: 10px 10px 0 0;
+	width: 250px;
+	background-color: rgba(255,255,255,.8);
+}
+
+#wrap > .container {
+	padding: 1px 1px 1px;
+}
+.container .credit {
+	margin: auto;
+}
+#footer > .container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+h1 {
+	text-align: center;
+	color: #000C52;
+  line-height: 0.8em;
+}
+h2 {
+	text-align: left;
+	color: #000C52;
+	font-size: 2.0em;
+}
+p {
+	text-align: left;
+	color: #000C52;
+	font-size: 1.0em;
+ 	}
+#main2 p {
+	text-align: center;
+	color: #000C52;
+	font-size: 1.6em;
+	margin: 0 0 0 0;
+}
+a {
+	color: #FFF;
+	text-decoration: none;
+}
+a:hover {
+	color: #FFF;
+	text-decoration: none;
+}
+code {
+	font-size: 80%;
+}
+.button {
+	background: linear-gradient(to bottom, #22abe9 5%, #36caf0 100%);
+	box-shadow: inset 0 1px 0 0 #7bdcf4;
+	border: 1px solid #0F799E;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 1.8em;
+	font-weight: 700;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #13506D;
+	padding: 10px 15px 4px 15px;
+}
+#quoteTop {
+	position: relative;
+	margin: -11px 0 0 -7px;
+}
+#quoteBtm {
+	position: relative;
+	margin: -0px auto 150 auto;
+	width: 255px;
+	text-align: right;
+}
+/** Form Styles **/
+
+#main {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 0 10px;
+}
+#main2 {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 0 0;
+	text-align: center;
+}
+label {
+	font-size: 1.4em;
+	font-weight: normal;
+	color: #000C52;
+}
+input {
+	width: 260px;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 25px;
+	border-radius: 5px;
+	border: 1px solid #cbcbcb;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
+	font-size: 1.4em;
+	height: 50px;
+}
+input[type=submit] {
+	background: linear-gradient(to bottom, #22abe9 5%, #36caf0 100%);
+	box-shadow: inset 0 1px 0 0 #7bdcf4;
+	border: 1px solid #0F799E;
+	color: #fff;
+	font-size: 1.8em;
+	font-weight: 700;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #13506D
+}
+input[type=submit]:hover {
+	background: linear-gradient(to bottom, #36caf0 5%, #22abe9 100%)
+}
+
+.savedialog {
+  display: none;
+  visibility: hidden;
+}
+
+.axtext {
+  font-family:'ArialMT', 'Arial';
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#333333;
+  text-align:left;
+  line-height:normal;
+}
+
+#SmId {
+  display:none;
+}
+#SmTtl {
+  display:none;
+}
+/*
+The following unn_img id entries are for the 'flash' safety moment to align the leading letter of the Acronym 'PASS'
+*/
+#u19_img {
+  width:1px;
+  height:23px;
+}
+#u21_img {
+  width:10px;
+  height:23px;
+}
+#u23_img {
+  width:10px;
+  height:23px;
+}
+#u25_img {
+  width:0px;
+  height:23px;
+}
+#u26_img {
+  width:10px;
+  height:23px;
+}</script>
+
+<script id="jsbin-source-javascript" type="text/javascript">/*
+
+*/
+var appState = 0; //disable save until  Refresh key used...
+
+var commsLog = 0; //value=0 disables alerts and logging
+
+function saveMoment(el) {
+
+  //can we save yet? not unless refresh key used...
+  if (appState == 1) {
+
+    if (html5_storage()) {
+      //toggle off the Safety Moment
+      showSavePanel(el);
+
+      //call save to local storage
+      var curSafetyId = document.getElementById('SmId').innerHTML;
+      var curSafetyText = document.getElementById('safeTMo').innerHTML;
+      var curSafetyHead = document.getElementById('headLine').innerHTML;
+      var curSafetyTtl = document.getElementById('SmTtl').innerHTML;
+
+      if (commsLog == 1)
+      {
+      console.log("local SMId = " + curSafetyId);
+      console.log("local SMHead = " + curSafetyHead);
+      console.log("local SMText = " + curSafetyText);
+      console.log("local SMText = " + curSafetyTtl);
+      }
+
+      //save the current safety moment to localstorage
+      tryToSave("SmId", curSafetyId);
+      tryToSave("SmHead", curSafetyHead);
+      tryToSave("SmText", curSafetyText);
+      tryToSave("SmTtl", curSafetyTtl);
+
+      //fetch local storage
+      var checkSMId = localStorage.getItem("SmId");
+      var checkSMHead = localStorage.getItem("SmHead");
+      var checkSMText =  localStorage.getItem("SmText");
+      var checkSMTtl = localStorage.getItem("SmTty");
+     }
+  }
+}
+
+function tryToSave(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch(e) {
+    if (isQuotaExceeded(e)) {
+      // Storage full, do some clean-up
+      flushSafetyMo();
+    }
+  }
+}
+
+function continueSafetyMoment(el) {
+  // toggle off the Save Dialog
+  // toggle on the Safety Moment
+    var elem = document.getElementById('showIt');
+  elem.style.display = 'block';
+  elem.style.visibility = 'visible';
+
+  var elem2 = document.getElementById('saveIt');
+  elem2.style.display = 'none';
+  elem2.style.visibility = 'hidden';
+
+}
+
+function showSavePanel(el) {
+      //toggle off the Safety Moment
+      var elem2 = document.getElementById('showIt');
+      elem2.style.display = 'none';
+      elem2.style.visibility = 'hidden';
+
+      //toggle on the Save Dialog
+      var elem = document.getElementById('saveIt');
+      elem.style.display = 'block';
+      elem.style.visibility = 'visible';
+}
+
+function getNext() {
+  appState = 1; // enable the save feature.
+  // if (commsLog == 1) console.log('appstate = ' + appState);
+
+  //aim is for the Safety Moments to come from JSON data file rather than in this function...
+
+  //get current displayed safety moment into elements
+  var elem = document.getElementById('safeTMo');
+  var elem2 = document.getElementById('headLine');
+  var elem3 = document.getElementById('SmId');
+  var elem4 = document.getElementById('SmTtl');
+
+  var fancyMoment = 'To operate a fire extinguisher, remember \'PASS\'' + '<div id="u20" class="axtext">' + '<p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u19_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'P' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'ull Pin' + '</span></p>' + '</div>' + '<div id="u21" class="ax_paragraph">' +  '<div id="u22" class="axtext">' + '<p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u21_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'A' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'im Low' + '</span></p>' + '</div>' + '</div>' + '<div id="u24" class="axtext">' + ' <p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u23_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'S' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'queeze' + '</span></p>' + '</div>' + '<div id="u26" class="axtext">' + ' <p><span style="font-family:\'Arial-BoldMT\', \'Arial Bold\', \'Arial\';font-weight:700;color:#C68E00;">' + '<img id="u25_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + 'S' + '</span><span style="font-family:\'ArialMT\', \'Arial\';font-weight:400;color:#000059;">' + 'weep' + '<img id="u26_img" class="img" src="https://jsbin-user-assets.s3.amazonaws.com/peterthepig/transparent.gif">' + '</span></p>' + '</div>';
+
+  if (elem3.innerHTML == 'SM_ES_001') {
+     elem.innerHTML  = 'Keep all tools in good condition with regular maintenance.';
+     elem2.innerHTML = 'Hand & Power Tools';
+    elem3.innerHTML = 'SM_HPT_001';
+    elem4.innerHTML = '2015/11/21 14:15';
+    //elem3.style.display = 'none';
+  }
+  else {
+    if (elem3.innerHTML == 'SM_HPT_001') {
+      elem.innerHTML = 'Safety guards must not be removed when using tools. It increases potential for injury, and is illegal';
+      elem2.innerHTML = 'Ladder Safety';
+      elem3.innerHTML = 'SM_LS_001';
+      elem4.innerHTML = '2015/11/30 13:30';
+
+    //elem3.style.display = 'none';
+    }
+    else {
+      if (elem3.innerHTML == 'SM_LS_001') {
+        elem.innerHTML = fancyMoment;
+        elem2.innerHTML = 'Fire Safety';
+        elem3.innerHTML = 'SM_FS_001';
+        elem4.innerHTML = '2015/11/21 10:45';
+        //elem3.style.display = 'none';
+      } // if
+      else {
+        if (elem3.innerHTML == 'SM_FS_001') {
+          elem.innerHTML = 'Avoid texting or cell phone use when climbing stairs';
+          elem2.innerHTML = 'Slips, Trips &amp; Falls';
+          elem3.innerHTML = 'SM_STP_001';
+          elem4.innerHTML = '2015/11/21 14:00';
+          //elem3.style.display = 'none';
+        } //if
+        else {
+          if (elem3.innerHTML == 'SM_STP_001') {
+            elem.innerHTML = 'Do not cycle on the right side of the road, cycle on the correct (left) side of the road';
+            elem2.innerHTML = 'Bicycle Safety';
+            elem3.innerHTML = 'SM_BS_001';
+            elem4.innerHTML = '2015/08/21 15:00';
+            //elem3.style.display = 'none';
+          }
+          else {
+            if (elem3.innerHTML == 'SM_BS_001') {
+              elem.innerHTML = 'Don’t use electrical equipment in damp or wet conditions.';
+              elem2.innerHTML = 'Electrical Safety';
+              elem3.innerHTML = 'SM_ES_001';
+              elem4.innerHTML = '2015/12/30 11:30';
+              //elem3.style.display = 'none';
+            }
+            else {
+              if (elem3.innerHTML == 'Summer2015') {
+                 elem.innerHTML = 'Don’t use electrical equipment in damp or wet conditions.';
+              elem2.innerHTML = 'Electrical Safety';
+              elem3.innerHTML = 'SM_ES_001';
+              elem4.innerHTML = '2015/12/30 11:30';
+              //elem3.style.display = 'none';
+              }
+              else {console.log('not found');}
+            }
+          }
+        }
+      } //else
+    } //else
+  } //else
+
+} //function
+
+function getLocalStorageSafetyMoment(el) {
+  if (!html5_storage()) {
+    console.log("no local storage!");
+  }
+  else {
+    //we have local storage capability, so...
+    if (commsLog == 1) console.log("yes local SM storage!");
+
+    //check for local safety message
+    if (localStorage.getItem("SmId") != null) {
+      var savedSafetyMoId = localStorage.getItem("SmId");
+      var savedSafetyMoHead = localStorage.getItem("SmHead");
+      var savedSafetyMoText = localStorage.getItem("SmText");
+      var savedSafetyMoTtl = localStorage.getItem("SmTtl");
+
+      //to use local saved one, get handles for the containers...
+      var elem = document.getElementById('safeTMo');
+      var elem2 = document.getElementById('headLine');
+      var elem3 = document.getElementById('SmId');
+      var elem4 = document.getElementById('SmTtl');
+
+      //... and then place Safety Moment into the HTML
+      elem.innerHTML = savedSafetyMoText;
+      elem2.innerHTML = savedSafetyMoHead;
+      elem3.innerHTML = savedSafetyMoId;
+      elem4.innerHTML = savedSafetyMoTtl;
+
+      //evidence...
+      if (commsLog == 1) {
+        console.log("local safety mo id = " + savedSafetyMoId);
+        console.log("local safety mo head = " + savedSafetyMoHead);
+        console.log("local safety mo text = " + savedSafetyMoText);
+        console.log("local safety mo Ttl = " + savedSafetyMoTtl);
+      }
+
+    //call routine to enable show of safety moment
+    continueSafetyMoment(el);
+    }
+    else {if (commsLog == 1) console.log('no moments');}
+  }
+}
+
+function checkUpFront() {
+  //onload for the page
+   if (commsLog == 1) console.log("onload");
+
+  if (!html5_storage()) {
+    console.log("no local storage!");
+    var elemSav = document.getElementById('ftrSav');
+    elemSav.disabled = true;
+    var elemRet = document.getElementById('ftrRet');
+    elemRet.disabled = true;
+  }
+  else {
+    //we have local storage capability...
+
+    //check the Ttl for the local safety message
+    var dateNow = new Date();
+
+    //Ttl into elem4
+    var elem4 = localStorage.getItem("SmTtl");
+    //check we have a date...
+    if (commsLog == 1) console.log('checkit' + ' ' + elem4);
+
+    if (elem4 != null) {
+      if (commsLog == 1) console.log('check for mo ' + elem4);
+
+      //parse elem4.innerHTML date into date + time elements
+      var e4Y = (elem4.substring(0, 4)), e4M = parseInt((elem4.substring(5, 7)))-1, e4D = (elem4.substring(8, 10)), e4Hr = (elem4.substring(11, 13)), e4Mn = (elem4.substring(14, 16));
+      // remembering javaScript months are 0 based
+
+      if (commsLog == 1) console.log(e4Y + ' ' + e4M + ' ' + e4D + ' ' + e4Hr + ' ' + e4Mn);
+      //set up a date from elem 4
+      var d = new Date(e4Y, e4M, e4D, e4Hr, e4Mn, 0);
+      var timeNow = formatDate();
+      //console.log(timeNow);
+
+      if (commsLog == 1) console.log(d.toString());
+      if (commsLog == 1) console.log(dateNow.toString());
+      if (d < dateNow) {
+        //flush local storage for safety mo
+        if (commsLog == 1) console.log('flush!');
+        flushSafetyMo();
+      }
+    }
+
+    //the following two statements are provided only for a reset
+    //flush local storage for safety mo
+    //flushSafetyMo();
+    //flush local storage for campaign message
+    //flushCampaignMessage();
+
+  }
+}
+
+
+//utility function for returning date
+function formatDate() {
+    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-') + ' ' + myDate;
+}
+
+//utility function instead of Modenizr
+function html5_storage() {
+  try {
+    return 'localStorage' in window && window.localStorage !== null;
+  } catch (e) {
+    console.log(e.toString());
+    return false;
+  }
+}
+
+//utility to check if storage quota exceeded
+function isQuotaExceeded(e) {
+  var quotaExceeded = false;
+  if (e) {
+    if (e.code) {
+      switch (e.code) {
+        case 22:
+          quotaExceeded = true;
+          break;
+        case 1014:
+          // Firefox
+          if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+            quotaExceeded = true;
+          }
+          break;
+      }
+    } else if (e.number === -2147024882) {
+      // Internet Explorer 8
+      quotaExceeded = true;
+    }
+  }
+  return quotaExceeded;
+}
+
+//flush local storage for SM
+function flushSafetyMo() {
+  localStorage.removeItem("SmId");
+  localStorage.removeItem("SmHead");
+  localStorage.removeItem("SmText");
+  localStorage.removeItem("SmTtl");
+}
+
+//flush local storage for CM
+function flushCampaignMessage() {
+  localStorage.removeItem("CmId");
+  localStorage.removeItem("CmText");
+}
+/*
+Function List
+==============
+saveMoment - saves the current safety moment - the action from the Save key
+
+continueSafetyMoment - next step after a save of the current safety moment
+
+getNext - see the next safety moment - the action from the Refresh Key
+
+getLocalStorageSafetyMoment - see the saved local safety moment - the action from the retrieve key
+
+checkUpFront - partially in development - this function is: 1. the function called by onload() 2. is aimed at presenting a Campaign Message
+
+html5_storage - utility function to check local storage is available to the browser
+
+flushSafetyMo - utility function to remove the "SmId" and "SmText" local storage items
+
+flushCampaignMessage - in development - utility function to remove the "CmId" and "CmText" local storage items
+*/
+/*
+How to get the safety moment app to work with Mobile Safari on iOs 7...
+When the Safari browser is used switch out of Private mode before using the app. This is because iOs 7 wipes all local storage by policy when the browser is in Private mode. So to use local storage to hold a safety moment you need to switch Private `Mode off. The policy implemented is nshttpcookiestorage
+
+*/
+ /* Advanced use of the campaign message is commented out for now...
+    //console.log("yes local CM storage!");
+
+    //check for campaign message to 'splash' over the screen at load-time
+    var campaignMessageId = localStorage.getItem("CmId");
+    var campaignMessageText = localStorage.getItem("CmText");
+
+    //check local storage for campaign message
+    if (campaignMessageId == null || campaignMessageText == null) {
+
+      //fetch current campaign message as none exists
+      campaignMessageId = "Summer2015";
+      campaignMessageText = "In the Summer sun, always apply suncream and drink plenty of water";
+
+      //set local storage to current campaign
+      localStorage.setItem("CmId", campaignMessageId);
+      localStorage.setItem("CmText", campaignMessageText);
+    }
+    else {
+      //campaign message exists, so compare with current one to see if out of date
+      localStorage.setItem("CmId", campaignMessageId);
+      localStorage.setItem("CmText", campaignMessageText);
+      if (campaignMessageId != "Summer2015") {
+        //so set local to seasonal campaign message
+        campaignMessageId = "Summer2015";
+        campaignMessageText = "In the Summer sun, always apply suncream and drink plenty of water";
+      }
+    }
+
+    */
+
+
+
+
+
+
+
+
+
+
+
+</script></body>
+
+</html>
+
+<!--
+Error handling cases:
+No network - how?
+No javascript - how?
+No local storage on save -disabled
+No local storage on retrieve-disabled
+No safety moment stored locally - not yet
+Safety moment TTL has expired - not yet
+Privacy mode in the browser - how?
+
+Onload
+======
+Check local storage for 'saved' safety message
+If one exists use this instead of the default
+
+Todo:
+Check local storage for 'campaign' message,
+If one exists show this as 'splash'
+If none exists then place seasonal 'campaign' into local storage
+
+Onclick of save
+===============
+Save current to local
+Only enabled once refresh key used
+Also local storage save checks for storage being full
+
+Onclick of ok
+=============
+Is this a confirm? 
+currently the activity has happened and no cancel
+
+Onclick of Retrieve
+===================
+Check local storage for 'saved' safety message
+If one exists show it
+TTL will expire the saved moment in localstorage
+so no delete is needed
+
+Onclick of Refresh
+==================
+Replace current message with next one
+Sets appstate so that a save to local is allowed
+ -->
